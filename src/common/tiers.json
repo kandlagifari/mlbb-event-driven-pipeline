@@ -1,0 +1,7 @@
+{
+  "lanes": {
+    "exp": "Titan", "gold": "Deadeye", "mid": "Archmage",
+    "jungle": "Slayer", "roam": "Guardian"
+  },
+  "levels": [120, 200, 300, 400, 500, 650, 800, 1100, 1500]
+}
