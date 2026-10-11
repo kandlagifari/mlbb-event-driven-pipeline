@@ -10,7 +10,7 @@ resource "aws_db_instance" "postgres" {
   engine_version    = "16"
   instance_class    = "db.t4g.micro"
   allocated_storage = 20
-  storage_type      = "gp2"
+  storage_type      = "gp3"
 
   db_name  = "mlbb"
   username = "mlbb_admin"
