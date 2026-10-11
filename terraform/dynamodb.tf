@@ -4,10 +4,25 @@ resource "aws_dynamodb_table" "leaderboard" {
   hash_key     = "pk"
   range_key    = "sk"
 
-  attribute { name = "pk";           type = "S" }
-  attribute { name = "sk";           type = "S" }
-  attribute { name = "lane";         type = "S" }
-  attribute { name = "style_points"; type = "N" }
+  attribute {
+    name = "pk"
+    type = "S"
+  }
+
+  attribute {
+    name = "sk"
+    type = "S"
+  }
+
+  attribute {
+    name = "lane"
+    type = "S"
+  }
+
+  attribute {
+    name = "style_points"
+    type = "N"
+  }
 
   global_secondary_index {
     name            = "lane-points-index"
@@ -16,5 +31,8 @@ resource "aws_dynamodb_table" "leaderboard" {
     projection_type = "ALL"
   }
 
-  ttl { attribute_name = "ttl" enabled = true }
+  ttl {
+    attribute_name = "ttl"
+    enabled        = true
+  }
 }
