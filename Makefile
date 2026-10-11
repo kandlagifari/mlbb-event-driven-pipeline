@@ -30,16 +30,16 @@ destroy:
 	cd terraform && terraform destroy
 
 seed:
-	python3 scripts/seed.py
+	uv run --with boto3 python3 scripts/seed.py
 
 demo:
-	python3 simulator/mlbb_simulator.py --count 30
+	uv run --with boto3 python3 simulator/mlbb_simulator.py --count 30
 
 bad:
-	python3 simulator/mlbb_simulator.py --bad --count 1
+	uv run --with boto3 python3 simulator/mlbb_simulator.py --bad --count 1
 
 duplicate:
-	python3 simulator/mlbb_simulator.py --duplicate --count 1
+	uv run --with boto3 python3 simulator/mlbb_simulator.py --duplicate --count 1
 
 poison:
-	python3 simulator/mlbb_simulator.py --poison --count 1
+	uv run --with boto3 python3 simulator/mlbb_simulator.py --poison --count 1
