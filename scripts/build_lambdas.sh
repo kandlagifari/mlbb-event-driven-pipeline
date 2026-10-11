@@ -10,7 +10,7 @@ echo "Building validator..."
 cd "$ROOT/src/validator"
 zip -q "$BUILD/validator.zip" handler.py
 cd "$ROOT/src/common"
-zip -q -u "$BUILD/validator.zip" tiers.json
+zip -q -u "$BUILD/validator.zip" tiers.json || true
 
 # processor — needs psycopg2-binary
 echo "Building processor..."
