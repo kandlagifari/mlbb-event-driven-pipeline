@@ -55,7 +55,7 @@ make destroy
 ```
 ├── terraform/                  # all infrastructure as code
 ├── src/
-│   ├── common/                 # tiers.json, lane titles and level thresholds
+│   ├── common/                 # tiers.json: lane titles and level thresholds
 │   ├── validator/              # validates and routes match files
 │   └── processor/              # updates scores, history, and alerts
 ├── simulator/                  # generates and uploads match events
