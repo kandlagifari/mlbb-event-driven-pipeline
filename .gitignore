@@ -1,3 +1,9 @@
+build/
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfvars
+*.zip
+__pycache__/
+*.pyc
 .claude/
-architecture/icons/
-architecture/architecture.html
+architecture/
