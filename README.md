@@ -1,4 +1,4 @@
-# MLBB Lane Leaderboard — Event-Driven Pipeline on AWS
+# MLBB Lane Leaderboard: Event-Driven Pipeline on AWS
 
 ![Architecture](docs/architecture.png)
 
@@ -15,7 +15,7 @@ Event-driven pipeline that turns MLBB match files into a near real-time lane lea
 **2. Configure**
 ```bash
 cp terraform/terraform.tfvars.example terraform/terraform.tfvars
-# edit terraform/terraform.tfvars — set your alert_email
+# edit terraform/terraform.tfvars and set your alert_email
 ```
 
 **3. Build Lambda zips**
@@ -55,7 +55,7 @@ make destroy
 ```
 ├── terraform/                  # all infrastructure as code
 ├── src/
-│   ├── common/                 # tiers.json — lane titles and level thresholds
+│   ├── common/                 # tiers.json, lane titles and level thresholds
 │   ├── validator/              # validates and routes match files
 │   └── processor/              # updates scores, history, and alerts
 ├── simulator/                  # generates and uploads match events
