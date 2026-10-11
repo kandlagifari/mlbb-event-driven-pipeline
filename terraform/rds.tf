@@ -18,7 +18,7 @@ resource "aws_db_instance" "postgres" {
 
   db_subnet_group_name   = aws_db_subnet_group.public.name
   vpc_security_group_ids = [aws_security_group.rds.id]
-  publicly_accessible    = false # security group restricts access; public subnet for demo simplicity
+  publicly_accessible    = true  # demo only: security group still restricts access to Lambda SG and your local IP
   skip_final_snapshot    = true
   depends_on             = [aws_cloudwatch_log_group.rds]
 
@@ -47,7 +47,7 @@ resource "aws_db_subnet_group" "public" {
   tags       = local.tags
 }
 
-# allow port 5432 only from the processor Lambda SG
+# allow port 5432 from the processor Lambda SG and your local machine
 resource "aws_security_group" "rds" {
   name   = "${local.project}-rds-sg"
   vpc_id = data.aws_vpc.default.id
@@ -58,5 +58,12 @@ resource "aws_security_group" "rds" {
     to_port         = 5432
     protocol        = "tcp"
     security_groups = [aws_security_group.processor_lambda.id]
+  }
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]  # demo only: set in terraform.tfvars
   }
 }
