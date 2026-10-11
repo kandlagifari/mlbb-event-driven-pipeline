@@ -10,7 +10,7 @@ Event-driven pipeline that turns MLBB match files into a near real-time lane lea
 - AWS CLI configured (`aws configure`)
 - Terraform >= 1.5
 - Python 3.12
-- `psycopg2-binary` (`pip install psycopg2-binary`)
+- `uv` installed (`build_lambdas.sh` uses `uv pip install` to bundle dependencies into the zip)
 
 **2. Configure**
 ```bash

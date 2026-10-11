@@ -15,7 +15,7 @@ zip -q -u "$BUILD/validator.zip" tiers.json
 # processor — needs psycopg2-binary
 echo "Building processor..."
 TMPDIR=$(mktemp -d)
-pip install -q -r "$ROOT/src/processor/requirements.txt" -t "$TMPDIR"
+uv pip install -q -r "$ROOT/src/processor/requirements.txt" -t "$TMPDIR"
 cp "$ROOT/src/processor/handler.py" "$TMPDIR/"
 mkdir -p "$TMPDIR/common"
 cp "$ROOT/src/common/tiers.json" "$TMPDIR/common/"
