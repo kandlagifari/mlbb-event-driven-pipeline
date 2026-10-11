@@ -17,14 +17,15 @@ resource "aws_cloudwatch_log_group" "processor" {
 }
 
 resource "aws_lambda_function" "validator" {
-  function_name = "${local.project}-validator"
-  role          = aws_iam_role.ingestor.arn
-  runtime       = local.lambda_runtime
-  handler       = local.lambda_handler
-  filename      = "../build/validator.zip"
-  timeout       = local.lambda_timeout
-  tags          = local.tags
-  depends_on    = [aws_cloudwatch_log_group.validator]
+  function_name    = "${local.project}-validator"
+  role             = aws_iam_role.ingestor.arn
+  runtime          = local.lambda_runtime
+  handler          = local.lambda_handler
+  filename         = "../build/validator.zip"
+  source_code_hash = filebase64sha256("../build/validator.zip")
+  timeout          = local.lambda_timeout
+  tags             = local.tags
+  depends_on       = [aws_cloudwatch_log_group.validator]
 
   environment {
     variables = {
@@ -46,15 +47,16 @@ resource "aws_s3_bucket_notification" "matches" {
 }
 
 resource "aws_lambda_function" "processor" {
-  function_name = "${local.project}-processor"
-  role          = aws_iam_role.processor.arn
-  runtime       = local.lambda_runtime
-  handler       = local.lambda_handler
-  filename      = "../build/processor.zip"
-  timeout       = local.lambda_timeout
-  memory_size   = 256
-  tags          = local.tags
-  depends_on    = [aws_cloudwatch_log_group.processor]
+  function_name    = "${local.project}-processor"
+  role             = aws_iam_role.processor.arn
+  runtime          = local.lambda_runtime
+  handler          = local.lambda_handler
+  filename         = "../build/processor.zip"
+  source_code_hash = filebase64sha256("../build/processor.zip")
+  timeout          = local.lambda_timeout
+  memory_size      = 256
+  tags             = local.tags
+  depends_on       = [aws_cloudwatch_log_group.processor]
 
   environment {
     variables = {

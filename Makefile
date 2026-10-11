@@ -1,4 +1,4 @@
-.PHONY: help build init plan apply destroy seed demo bad duplicate poison
+.PHONY: help build init plan apply destroy seed demo bad duplicate
 
 help:
 	@echo "Usage: make <target>"
@@ -12,7 +12,6 @@ help:
 	@echo "  demo       run simulator with 30 events"
 	@echo "  bad        upload an invalid file"
 	@echo "  duplicate  send the same match_id twice"
-	@echo "  poison     send a corrupt payload to the DLQ"
 
 build:
 	bash scripts/build_lambdas.sh
@@ -40,6 +39,3 @@ bad:
 
 duplicate:
 	uv run --with boto3 python3 simulator/mlbb_simulator.py --duplicate --count 1
-
-poison:
-	uv run --with boto3 python3 simulator/mlbb_simulator.py --poison --count 1

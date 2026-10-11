@@ -32,6 +32,6 @@ for player, lanes in SEEDS.items():
                 "updated_at":   {"S": "2026-01-01T00:00:00"},
             },
         )
-        print(f"Seeded {player} / {lane}: {pts} pts")
+        print(f"Seeded:   {player} | {lane:<8} | {pts} pts")
 
 print("Done.")

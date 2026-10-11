@@ -2,6 +2,7 @@ build/
 terraform/.terraform/
 terraform/.terraform.lock.hcl
 terraform/terraform.tfvars
+terraform/terraform.tfstate*
 *.zip
 __pycache__/
 *.pyc

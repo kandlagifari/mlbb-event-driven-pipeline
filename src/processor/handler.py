@@ -2,6 +2,8 @@ import os, json, boto3, psycopg2, time, logging
 from datetime import datetime
 
 logger      = logging.getLogger()
+logger.setLevel(logging.INFO)
+
 TABLE       = os.environ["TABLE_NAME"]
 TOPIC_ARN   = os.environ["TOPIC_ARN"]
 SSM_PREFIX  = os.environ["SSM_PREFIX"]
@@ -32,7 +34,7 @@ def _get_level(points: int, thresholds: list) -> int:
 
 
 def _load_tiers() -> dict:
-    path = os.path.join(os.path.dirname(__file__), "..", "common", "tiers.json")
+    path = os.path.join(os.path.dirname(__file__), "common", "tiers.json")
     with open(path) as f:
         return json.load(f)
 

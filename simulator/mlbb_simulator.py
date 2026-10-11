@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, boto3, json, random, string, time, uuid
+import argparse, boto3, json, random, time, uuid
 from datetime import datetime, timezone
 
 LANES      = ["exp", "gold", "mid", "jungle", "roam"]
@@ -8,15 +8,13 @@ TASK_TYPES = ["kill", "assist", "turret", "objective", "survival"]
 DELTAS     = [5, 10, 15, 20]
 
 
-def make_match(bad=False, duplicate_id=None, poison=False):
-    if poison:
-        return b"NOT_JSON_AT_ALL"
+def make_match(bad=False, duplicate_id=None):
     payload = {
         "match_id":     duplicate_id or f"m-{uuid.uuid4().hex[:8]}",
         "player_id":    random.choice(PLAYERS),
         "lane":         random.choice(LANES),
         "task_type":    random.choice(TASK_TYPES),
-        "points_delta": 12 if bad else random.choice(DELTAS),
+        "points_delta": 12 if bad else random.choice(DELTAS),  # 12 is invalid, triggers rejection
         "timestamp":    datetime.now(timezone.utc).isoformat(),
     }
     return json.dumps(payload).encode()
@@ -24,11 +22,8 @@ def make_match(bad=False, duplicate_id=None, poison=False):
 
 def upload(s3, bucket, body, key):
     s3.put_object(Bucket=bucket, Key=f"matches/{key}", Body=body)
-    try:
-        data = json.loads(body)
-        print(f"Uploaded: {data['player_id']} | {data['lane']:<8} | +{data['points_delta']} pts")
-    except Exception:
-        print(f"Uploaded: poison message → {key}")
+    data = json.loads(body)
+    print(f"Uploaded: {data['player_id']} | {data['lane']:<8} | +{data['points_delta']} pts")
 
 
 def main():
@@ -37,19 +32,17 @@ def main():
     parser.add_argument("--interval",  type=float, default=3.0)
     parser.add_argument("--bad",       action="store_true")
     parser.add_argument("--duplicate", action="store_true")
-    parser.add_argument("--poison",    action="store_true")
     parser.add_argument("--bucket",    default=None)
     args = parser.parse_args()
 
     s3     = boto3.client("s3")
-    bucket = args.bucket or boto3.client("ssm").get_parameter(
-        Name="/mlbb/simulator/bucket")["Parameter"]["Value"]
+    bucket = args.bucket or "mlbb-leaderboard-matches"  # replace with your bucket name
 
     dup_id = f"m-{uuid.uuid4().hex[:8]}" if args.duplicate else None
 
     for i in range(args.count):
         key  = f"{uuid.uuid4().hex}.json"
-        body = make_match(bad=args.bad, duplicate_id=dup_id, poison=args.poison)
+        body = make_match(bad=args.bad, duplicate_id=dup_id)
         upload(s3, bucket, body, key)
         if args.duplicate and i == 0:
             time.sleep(1)
