@@ -1,5 +1,7 @@
 # MLBB Lane Leaderboard — Event-Driven Pipeline on AWS
 
+![Architecture](docs/architecture.png)
+
 Event-driven pipeline that turns MLBB match files into a near real-time lane leaderboard using S3, Lambda, SQS, DynamoDB, RDS PostgreSQL, and SNS.
 
 ## Quick Start
