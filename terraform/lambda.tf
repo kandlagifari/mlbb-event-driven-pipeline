@@ -4,6 +4,18 @@ locals {
   lambda_timeout = 10
 }
 
+resource "aws_cloudwatch_log_group" "validator" {
+  name              = "/aws/lambda/${local.project}-validator"
+  retention_in_days = 7
+  tags              = local.tags
+}
+
+resource "aws_cloudwatch_log_group" "processor" {
+  name              = "/aws/lambda/${local.project}-processor"
+  retention_in_days = 7
+  tags              = local.tags
+}
+
 resource "aws_lambda_function" "validator" {
   function_name = "${local.project}-validator"
   role          = aws_iam_role.ingestor.arn
@@ -12,6 +24,7 @@ resource "aws_lambda_function" "validator" {
   filename      = "../build/validator.zip"
   timeout       = local.lambda_timeout
   tags          = local.tags
+  depends_on    = [aws_cloudwatch_log_group.validator]
 
   environment {
     variables = {
@@ -41,6 +54,7 @@ resource "aws_lambda_function" "processor" {
   timeout       = local.lambda_timeout
   memory_size   = 256
   tags          = local.tags
+  depends_on    = [aws_cloudwatch_log_group.processor]
 
   environment {
     variables = {

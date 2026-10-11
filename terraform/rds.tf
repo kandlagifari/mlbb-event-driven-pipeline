@@ -1,5 +1,11 @@
+resource "aws_cloudwatch_log_group" "rds" {
+  name              = "/aws/rds/instance/${local.project}-rds/postgresql"
+  retention_in_days = 7
+  tags              = local.tags
+}
+
 resource "aws_db_instance" "postgres" {
-  identifier        = local.project
+  identifier        = "${local.project}-rds"
   engine            = "postgres"
   engine_version    = "16"
   instance_class    = "db.t4g.micro"
@@ -14,6 +20,7 @@ resource "aws_db_instance" "postgres" {
   vpc_security_group_ids = [aws_security_group.rds.id]
   publicly_accessible    = false # security group restricts access; public subnet for demo simplicity
   skip_final_snapshot    = true
+  depends_on             = [aws_cloudwatch_log_group.rds]
 
   tags = local.tags
 }
